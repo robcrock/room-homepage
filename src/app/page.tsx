@@ -6,7 +6,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const NAV_ITEMS = ["Home", "Shop", "About", "Contact"];
 
   const slides = [
     {
@@ -31,10 +34,22 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col">
-      {/* Top Row */}
-      <div className="flex flex-row">
-        <div className="relative h-[534px] w-[840px]">
-          <nav className="absolute left-16 top-16 z-10 flex items-center gap-14">
+      {/* Top Half */}
+      <div className="flex flex-col md:flex-row">
+        <div className="relative h-[534px] w-full md:w-[840px]">
+          <nav className="absolute top-12 z-10 flex w-full items-center justify-center gap-14 border border-red-500 md:left-16 md:top-16 md:justify-start">
+            {/* Mobile Nav */}
+            <button
+              className="absolute left-6 flex h-6 w-6 flex-row items-center justify-center gap-8 lg:hidden"
+              onClick={() => setIsMenuOpen(true)}
+            >
+              <Image
+                src="/images/icon-hamburger.svg"
+                alt="hamburger"
+                width={20}
+                height={14}
+              />
+            </button>
             <Image
               src="/images/logo.svg"
               alt="logo"
@@ -42,21 +57,40 @@ export default function Home() {
               height={13}
               className="max-h-[13px]"
             />
-            <ul className="flex flex-row gap-8">
-              <li className="text-[16px] font-semibold lowercase text-white">
-                Home
-              </li>
-              <li className="text-[16px] font-semibold lowercase text-white">
-                Shop
-              </li>
-              <li className="text-[16px] font-semibold lowercase text-white">
-                About
-              </li>
-              <li className="text-[16px] font-semibold lowercase text-white">
-                Contact
-              </li>
+            {/* Desktop Nav */}
+            <ul className="text-fem-white hidden flex-row gap-8 text-base font-semibold md:flex">
+              {NAV_ITEMS.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
           </nav>
+          {/* Mobile Nav */}
+          <div
+            className={`bg-fem-black/50 fixed inset-0 z-50 flex h-screen w-screen transform flex-col transition-transform duration-300 ease-in-out md:hidden ${
+              isMenuOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <div className="bg-fem-white flex h-[110px] flex-col items-center justify-center">
+              <div className="flex w-full items-center justify-between px-6">
+                <button
+                  className="hover:text-fem-black flex h-6 w-6 flex-row items-center justify-center text-white"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Image
+                    src="/images/icon-close.svg"
+                    alt="close"
+                    width={20}
+                    height={14}
+                  />
+                </button>
+                <ul className="text-fem-black flex flex-row gap-8 font-semibold md:hidden lg:flex">
+                  {NAV_ITEMS.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
           <AnimatePresence mode="popLayout">
             <motion.div
               key={currentSlide}
@@ -146,8 +180,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* Bottom Row */}
-      <div className="flex flex-row">
+      {/* Bottom Half */}
+      <div className="flex flex-col md:flex-row">
         <Image
           src="/images/image-about-dark.jpg"
           alt="hero"
