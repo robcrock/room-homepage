@@ -1,112 +1,178 @@
+"use client";
+
+import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      image: "/images/desktop-image-hero-1.jpg",
+      title: "Discover innovative ways to decorate",
+      description:
+        "We provide unmatched quality, comfort, and style for property owners across the country. Our experts combine form and function in bringing your vision to life. Create a room in your own style with our collection and make your property a reflection of you and what you love.",
+    },
+    {
+      image: "/images/desktop-image-hero-2.jpg",
+      title: "We are available all across the globe",
+      description:
+        "With stores all over the world, it's easy for you to find furniture for your home or place of business. Locally, we're in most major cities throughout the country. Find the branch nearest you using our store locator. Any questions? Don't hesitate to contact us today.",
+    },
+    {
+      image: "/images/desktop-image-hero-3.jpg",
+      title: "Manufactured with the best materials",
+      description:
+        "Our modern furniture store provide a high level of quality. Our company has invested in advanced technology to ensure that every product is made as perfect and as consistent as possible. With three decades of experience in this industry, we understand what customers want for their home and office.",
+    },
+  ];
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
+    <main className="flex min-h-screen flex-col">
+      {/* Top Row */}
+      <div className="flex flex-row">
+        <div className="relative h-[534px] w-[840px]">
+          <nav className="absolute left-16 top-16 z-10 flex items-center gap-14">
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+              src="/images/logo.svg"
+              alt="logo"
+              width={60}
+              height={13}
+              className="max-h-[13px]"
             />
-          </a>
+            <ul className="flex flex-row gap-8">
+              <li className="text-[16px] font-semibold lowercase text-white">
+                Home
+              </li>
+              <li className="text-[16px] font-semibold lowercase text-white">
+                Shop
+              </li>
+              <li className="text-[16px] font-semibold lowercase text-white">
+                About
+              </li>
+              <li className="text-[16px] font-semibold lowercase text-white">
+                Contact
+              </li>
+            </ul>
+          </nav>
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={slides[currentSlide].image}
+                alt="hero"
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </motion.div>
+          </AnimatePresence>
+          <div className="absolute bottom-0 right-0 flex translate-x-full flex-row">
+            <button
+              className={cn(
+                "bg-fem-black hover:bg-fem-veryDarkGray flex h-[80px] w-[80px] items-center justify-center transition-colors",
+              )}
+              aria-label="Previous slide"
+              onClick={() =>
+                setCurrentSlide((prev) =>
+                  prev === 0 ? slides.length - 1 : prev - 1,
+                )
+              }
+            >
+              <Image
+                src="/images/icon-angle-left.svg"
+                alt=""
+                width={12}
+                height={24}
+              />
+            </button>
+            <button
+              className={cn(
+                "bg-fem-black hover:bg-fem-veryDarkGray flex h-[80px] w-[80px] items-center justify-center transition-colors",
+              )}
+              aria-label="Next slide"
+              onClick={() =>
+                setCurrentSlide((prev) =>
+                  prev === slides.length - 1 ? 0 : prev + 1,
+                )
+              }
+            >
+              <Image
+                src="/images/icon-angle-right.svg"
+                alt=""
+                width={12}
+                height={24}
+              />
+            </button>
+          </div>
+        </div>
+        <div className="w-[41%] px-[100px] pt-[120px]">
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            >
+              <h1 className="mb-[18px] text-5xl font-semibold -tracking-[2px]">
+                {slides[currentSlide].title}
+              </h1>
+              <p className="tracking-0 text-fem-darkGray mb-[26px] text-[16px] font-medium leading-[22px]">
+                {slides[currentSlide].description}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+          <div className="flex flex-row items-center">
+            <button className="hover:text-fem-veryDarkGray group flex items-center gap-4 transition-colors">
+              <span className="text-[15px] font-medium uppercase tracking-[12px]">
+                Shop now
+              </span>
+              <Image
+                src="/images/icon-arrow.svg"
+                alt="arrow"
+                width={40}
+                height={12}
+                className="max-h-[12px] transition-transform group-hover:translate-x-1"
+              />
+            </button>
+          </div>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
+      {/* Bottom Row */}
+      <div className="flex flex-row">
         <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+          src="/images/image-about-dark.jpg"
+          alt="hero"
+          width={420}
+          height={266}
         />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
+        <div className="w-[580px] px-12 py-[50px]">
+          <h1 className="mb-4 text-base font-bold uppercase leading-[22px] tracking-[6px]">
+            About our furniture
+          </h1>
+          <p className="text-fem-darkGray text-base font-medium leading-[22px] -tracking-[0.33px]">
+            Our multifunctional collection blends design and function to suit
+            your individual taste. Make each room unique, or pick a cohesive
+            theme that best express your interests and what inspires you. Find
+            the furniture pieces you need, from traditional to contemporary
+            styles or anything in between. Product specialists are available to
+            help you create your dream space.
           </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+        </div>
+        <Image
+          src="/images/image-about-light.jpg"
+          alt="hero"
+          width={440}
+          height={266}
+        />
       </div>
     </main>
   );
