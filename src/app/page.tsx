@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ExpandingUnderline from "@/components/ExpandingUnderline";
 
 type NavItem = "Home" | "Shop" | "About" | "Contact";
 const NAV_ITEMS: NavItem[] = ["Home", "Shop", "About", "Contact"];
@@ -99,16 +100,19 @@ export default function Home() {
             </motion.div>
           </AnimatePresence>
           <div className="flex flex-row items-center">
-            <button className="hover:text-fem-veryDarkGray group flex items-center gap-4 transition-colors">
-              <span className="text-[15px] font-medium uppercase tracking-[12px]">
+            <button
+              className="focus:ring-fem-darkGray group inline-flex items-center gap-4 transition-colors focus:outline-none focus:ring-2"
+              aria-label="Shop now"
+            >
+              <span className="group-hover:text-fem-darkGray group-focus:text-fem-darkGray text-[15px] font-medium uppercase tracking-[12px] transition-colors duration-300">
                 Shop now
               </span>
               <Image
                 src="/images/icon-arrow.svg"
-                alt="arrow"
+                alt=""
                 width={40}
                 height={12}
-                className="max-h-[12px] transition-transform group-hover:translate-x-1"
+                className="max-h-[12px] transition-transform duration-300 group-hover:translate-x-1 group-hover:brightness-50 group-focus:translate-x-1 group-focus:brightness-50"
               />
             </button>
           </div>
@@ -197,7 +201,9 @@ function DesktopNavItems({ NAV_ITEMS }: { NAV_ITEMS: NavItem[] }) {
   return (
     <ul className="text-fem-white hidden flex-row gap-8 text-base font-semibold md:flex">
       {NAV_ITEMS.map((item) => (
-        <li key={item}>{item}</li>
+        <li key={item}>
+          <ExpandingUnderline key={item}>{item}</ExpandingUnderline>
+        </li>
       ))}
     </ul>
   );
@@ -251,7 +257,11 @@ function MobileNavItems({ NAV_ITEMS }: MobileNavItemsProps) {
   return (
     <ul className="text-fem-black flex flex-row gap-8 font-semibold md:hidden lg:flex">
       {NAV_ITEMS.map((item) => (
-        <li key={item}>{item}</li>
+        <li key={item}>
+          <ExpandingUnderline key={item} className="bg-fem-black">
+            {item}
+          </ExpandingUnderline>
+        </li>
       ))}
     </ul>
   );
