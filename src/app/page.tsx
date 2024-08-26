@@ -128,7 +128,7 @@ export default function Home() {
           height={266}
           priority
         />
-        <div className="w-full px-8 py-[50px] md:w-[580px] md:px-12">
+        <div className="w-full px-8 py-[60px] md:w-[580px] md:px-12">
           <h1 className="mb-4 text-base font-bold uppercase leading-[22px] tracking-[6px]">
             About our furniture
           </h1>
