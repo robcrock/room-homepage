@@ -60,6 +60,7 @@ export default function Home() {
                 alt="hero"
                 fill
                 style={{ objectFit: "cover" }}
+                priority
               />
             </motion.div>
           </AnimatePresence>
@@ -125,6 +126,7 @@ export default function Home() {
           alt="hero"
           width={420}
           height={266}
+          priority
         />
         <div className="w-full px-8 py-[50px] md:w-[580px] md:px-12">
           <h1 className="mb-4 text-base font-bold uppercase leading-[22px] tracking-[6px]">
@@ -144,6 +146,7 @@ export default function Home() {
           alt="hero"
           width={440}
           height={266}
+          priority
         />
       </div>
     </main>
