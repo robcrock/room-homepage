@@ -5,11 +5,12 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+type NavItem = "Home" | "Shop" | "About" | "Contact";
+const NAV_ITEMS: NavItem[] = ["Home", "Shop", "About", "Contact"];
+
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const NAV_ITEMS = ["Home", "Shop", "About", "Contact"];
 
   const slides = [
     {
@@ -36,61 +37,14 @@ export default function Home() {
     <main className="flex min-h-screen flex-col">
       {/* Top Half */}
       <div className="flex flex-col md:flex-row">
-        <div className="relative h-[534px] w-full md:w-[840px]">
-          <nav className="absolute top-12 z-10 flex w-full items-center justify-center gap-14 border border-red-500 md:left-16 md:top-16 md:justify-start">
-            {/* Mobile Nav */}
-            <button
-              className="absolute left-6 flex h-6 w-6 flex-row items-center justify-center gap-8 lg:hidden"
-              onClick={() => setIsMenuOpen(true)}
-            >
-              <Image
-                src="/images/icon-hamburger.svg"
-                alt="hamburger"
-                width={20}
-                height={14}
-              />
-            </button>
-            <Image
-              src="/images/logo.svg"
-              alt="logo"
-              width={60}
-              height={13}
-              className="max-h-[13px]"
-            />
-            {/* Desktop Nav */}
-            <ul className="text-fem-white hidden flex-row gap-8 text-base font-semibold md:flex">
-              {NAV_ITEMS.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </nav>
-          {/* Mobile Nav */}
-          <div
-            className={`bg-fem-black/50 fixed inset-0 z-50 flex h-screen w-screen transform flex-col transition-transform duration-300 ease-in-out md:hidden ${
-              isMenuOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
-          >
-            <div className="bg-fem-white flex h-[110px] flex-col items-center justify-center">
-              <div className="flex w-full items-center justify-between px-6">
-                <button
-                  className="hover:text-fem-black flex h-6 w-6 flex-row items-center justify-center text-white"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Image
-                    src="/images/icon-close.svg"
-                    alt="close"
-                    width={20}
-                    height={14}
-                  />
-                </button>
-                <ul className="text-fem-black flex flex-row gap-8 font-semibold md:hidden lg:flex">
-                  {NAV_ITEMS.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+        {/* The follow div contains the hero image, navigation, and previous/next slide buttons */}
+        <div className="relative h-[360px] w-full md:h-[534px] md:w-[840px]">
+          <Navigation NAV_ITEMS={NAV_ITEMS} setIsMenuOpen={setIsMenuOpen} />
+          <MobileMenu
+            NAV_ITEMS={NAV_ITEMS}
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+          />
           <AnimatePresence mode="popLayout">
             <motion.div
               key={currentSlide}
@@ -108,46 +62,26 @@ export default function Home() {
               />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute bottom-0 right-0 flex translate-x-full flex-row">
-            <button
-              className={cn(
-                "bg-fem-black hover:bg-fem-veryDarkGray flex h-[80px] w-[80px] items-center justify-center transition-colors",
-              )}
-              aria-label="Previous slide"
+          <div className="absolute bottom-0 right-0 flex flex-row md:translate-x-full">
+            <SlideButton
+              direction="previous"
               onClick={() =>
                 setCurrentSlide((prev) =>
                   prev === 0 ? slides.length - 1 : prev - 1,
                 )
               }
-            >
-              <Image
-                src="/images/icon-angle-left.svg"
-                alt=""
-                width={12}
-                height={24}
-              />
-            </button>
-            <button
-              className={cn(
-                "bg-fem-black hover:bg-fem-veryDarkGray flex h-[80px] w-[80px] items-center justify-center transition-colors",
-              )}
-              aria-label="Next slide"
+            />
+            <SlideButton
+              direction="next"
               onClick={() =>
                 setCurrentSlide((prev) =>
                   prev === slides.length - 1 ? 0 : prev + 1,
                 )
               }
-            >
-              <Image
-                src="/images/icon-angle-right.svg"
-                alt=""
-                width={12}
-                height={24}
-              />
-            </button>
+            />
           </div>
         </div>
-        <div className="w-[41%] px-[100px] pt-[120px]">
+        <div className="w-full px-6 py-[60px] md:w-[41%] md:px-[100px] md:pt-[120px]">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={currentSlide}
@@ -156,10 +90,10 @@ export default function Home() {
               exit={{ opacity: 0 }}
               transition={{ duration: 1 }}
             >
-              <h1 className="mb-[18px] text-5xl font-semibold -tracking-[2px]">
+              <h1 className="leading-auto mb-[15px] text-[40px] font-semibold !leading-[.95] -tracking-[2px] md:mb-[18px] md:text-5xl">
                 {slides[currentSlide].title}
               </h1>
-              <p className="tracking-0 text-fem-darkGray mb-[26px] text-[16px] font-medium leading-[22px]">
+              <p className="tracking-0 text-fem-darkGray mb-[41px] text-[16px] font-medium leading-[22px] md:mb-[26px]">
                 {slides[currentSlide].description}
               </p>
             </motion.div>
@@ -188,7 +122,7 @@ export default function Home() {
           width={420}
           height={266}
         />
-        <div className="w-[580px] px-12 py-[50px]">
+        <div className="w-full px-8 py-[50px] md:w-[580px] md:px-12">
           <h1 className="mb-4 text-base font-bold uppercase leading-[22px] tracking-[6px]">
             About our furniture
           </h1>
@@ -209,5 +143,141 @@ export default function Home() {
         />
       </div>
     </main>
+  );
+}
+
+type NavigationProps = {
+  NAV_ITEMS: NavItem[];
+  setIsMenuOpen: (isMenuOpen: boolean) => void;
+};
+
+function Navigation({ NAV_ITEMS, setIsMenuOpen }: NavigationProps) {
+  return (
+    <nav className="absolute top-12 z-10 flex w-full items-center justify-center gap-14 md:left-16 md:top-16 md:justify-start">
+      <MobileNavButton setIsMenuOpen={setIsMenuOpen} />
+      <Logo />
+      <DesktopNavItems NAV_ITEMS={NAV_ITEMS} />
+    </nav>
+  );
+}
+
+type MobileNavButtonProps = {
+  setIsMenuOpen: (isMenuOpen: boolean) => void;
+};
+
+function MobileNavButton({ setIsMenuOpen }: MobileNavButtonProps) {
+  return (
+    <button
+      className="absolute left-6 flex h-6 w-6 flex-row items-center justify-center gap-8 lg:hidden"
+      onClick={() => setIsMenuOpen(true)}
+    >
+      <Image
+        src="/images/icon-hamburger.svg"
+        alt="hamburger"
+        width={20}
+        height={14}
+      />
+    </button>
+  );
+}
+
+function Logo() {
+  return (
+    <Image
+      src="/images/logo.svg"
+      alt="logo"
+      width={60}
+      height={13}
+      className="max-h-[13px]"
+    />
+  );
+}
+
+function DesktopNavItems({ NAV_ITEMS }: { NAV_ITEMS: NavItem[] }) {
+  return (
+    <ul className="text-fem-white hidden flex-row gap-8 text-base font-semibold md:flex">
+      {NAV_ITEMS.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+
+function MobileMenu({
+  NAV_ITEMS,
+  isMenuOpen,
+  setIsMenuOpen,
+}: {
+  NAV_ITEMS: NavItem[];
+  isMenuOpen: boolean;
+  setIsMenuOpen: (isMenuOpen: boolean) => void;
+}) {
+  return (
+    <div
+      className={`bg-fem-black/50 fixed inset-0 z-50 flex h-screen w-screen transform flex-col transition-transform duration-300 ease-in-out md:hidden ${
+        isMenuOpen ? "translate-x-0" : "-translate-x-full"
+      }`}
+    >
+      <div className="bg-fem-white flex h-[110px] flex-col items-center justify-center">
+        <div className="flex w-full items-center justify-between px-6">
+          <CloseButton setIsMenuOpen={setIsMenuOpen} />
+          <MobileNavItems NAV_ITEMS={NAV_ITEMS} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type CloseButtonProps = {
+  setIsMenuOpen: (isMenuOpen: boolean) => void;
+};
+
+function CloseButton({ setIsMenuOpen }: CloseButtonProps) {
+  return (
+    <button
+      className="hover:text-fem-black flex h-6 w-6 flex-row items-center justify-center text-white"
+      onClick={() => setIsMenuOpen(false)}
+    >
+      <Image src="/images/icon-close.svg" alt="close" width={20} height={14} />
+    </button>
+  );
+}
+
+type MobileNavItemsProps = {
+  NAV_ITEMS: NavItem[];
+};
+
+function MobileNavItems({ NAV_ITEMS }: MobileNavItemsProps) {
+  return (
+    <ul className="text-fem-black flex flex-row gap-8 font-semibold md:hidden lg:flex">
+      {NAV_ITEMS.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+
+function SlideButton({
+  direction,
+  onClick,
+}: {
+  direction: "previous" | "next";
+  onClick: () => void;
+}) {
+  return (
+    <button
+      className={cn(
+        "bg-fem-black hover:bg-fem-veryDarkGray flex h-[56px] w-[56px] items-center justify-center transition-colors md:h-[80px] md:w-[80px]",
+      )}
+      aria-label={`${direction} slide`}
+      onClick={onClick}
+    >
+      <Image
+        src={`/images/icon-angle-${direction === "previous" ? "left" : "right"}.svg`}
+        alt=""
+        width={12}
+        height={24}
+      />
+    </button>
   );
 }
