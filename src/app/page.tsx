@@ -132,7 +132,7 @@ export default function Home() {
           <h1 className="mb-4 text-base font-bold uppercase leading-[22px] tracking-[6px]">
             About our furniture
           </h1>
-          <p className="text-fem-darkGray text-base font-medium leading-[22px] -tracking-[0.33px]">
+          <p className="text-fem-darkGray text-base font-medium leading-[22px] tracking-[.8]">
             Our multifunctional collection blends design and function to suit
             your individual taste. Make each room unique, or pick a cohesive
             theme that best express your interests and what inspires you. Find
