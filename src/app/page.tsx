@@ -175,7 +175,7 @@ type MobileNavButtonProps = {
 function MobileNavButton({ setIsMenuOpen }: MobileNavButtonProps) {
   return (
     <button
-      className="absolute left-6 flex h-6 w-6 flex-row items-center justify-center gap-8 lg:hidden"
+      className="absolute left-6 flex h-6 w-6 flex-row items-center justify-center gap-8 md:hidden"
       onClick={() => setIsMenuOpen(true)}
     >
       <Image
